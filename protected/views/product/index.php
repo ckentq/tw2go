@@ -4,10 +4,12 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Product', 'url'=>array('index')),
-	array('label'=>'Create Product', 'url'=>array('create')),
+	array('label'=>'管理產品', 'url'=>array('admin')),
+	array('label'=>'新增產品', 'url'=>array('create')),
 );
-
+$this->widget('zii.widgets.CMenu',array(
+			'items'=>$this->menu
+		));
 ?>
 <h1><?php echo $this->id . '/' . $this->action->id; ?></h1>
 

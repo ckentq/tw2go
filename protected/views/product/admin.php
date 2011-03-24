@@ -5,8 +5,8 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Product', 'url'=>array('index')),
-	array('label'=>'Create Product', 'url'=>array('create')),
+	array('label'=>'產品清單首頁', 'url'=>array('index')),
+	array('label'=>'新增產品', 'url'=>array('create')),
 );
 $this->widget('zii.widgets.CMenu',array(
 			'items'=>$this->menu
@@ -42,7 +42,7 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'product-grid',
-	'dataProvider'=>$model->search(),
+	'dataProvider'=>$dataProvider,
 	'filter'=>$model,
 	'columns'=>array(
 		'id',

@@ -60,21 +60,36 @@ class ProductController extends Controller
 	}
 	public function actionAdmin()
 	{
-		$model = $this->loadUser();
 		
-		//$model = $user->with('owner')->findAll();
-		//$this->render('admin');
+		//$model = $this->loadUser();
+		$u = Yii::app()->getModule('user');
+		$model = new Product;
+		
+		$criteria=new CDbCriteria(array());  
+        if(Yii::app()->user->id){
+            $criteria->condition=" owner =".Yii::app()->user->id;
+        }
+        		
+		$dataProvider=new CActiveDataProvider('Product',array(
+			'pagination'=>array(
+                'pageSize'=>20
+            ),
+            'criteria'=>$criteria
+        ));
+		
+		
 		$this->render('admin',array(
 	    	'model'=>$model,
-			'profile'=>$model->product,
+			'dataProvider'=>$dataProvider,
 	    ));
 	}
-	public function actionView()
+	public function actionView($id)
 	{
 		$model = new Product;
-		//$this->render('admin');
+		$model->id=$id;
+        
 		$this->render('view',array(
-			'model'=>$model,
+			'model'=>$this->loadModel($id),
 		));
 	}
 	
@@ -87,13 +102,20 @@ class ProductController extends Controller
 		));
 	}
 	
-	
+	public function loadModel($id)
+	{
+		$model=Product::model()->findByPk((int)$id);
+		if($model===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+		return $model;
+	}
+	/*暫時沒用到這個 這個有問題*/
 	public function loadUser()
 	{
 		if($this->_model===null)
 		{
 			if(Yii::app()->user->id)
-				$this->_model=Yii::app()->controller->module->user();
+				$this->_model=Yii::app()->module('User');
 			if($this->_model===null)
 				$this->redirect(Yii::app()->controller->module->loginUrl);
 		}
